@@ -1,4 +1,4 @@
-package com.example.kjemsqrecyclebackend;
+package com.example.kjemsqrecyclebackend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
