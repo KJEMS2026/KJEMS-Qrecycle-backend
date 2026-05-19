@@ -15,15 +15,20 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private int id;
+
     @Column(name = "user_id", unique = true)
     private UUID userId;
+
     @Column(name = "first_name")
     private String firstName;
+
     @Column(name = "last_name")
     private String lastName;
+
     private String email;
     private String phoneNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
