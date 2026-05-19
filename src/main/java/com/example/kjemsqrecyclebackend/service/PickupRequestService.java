@@ -1,5 +1,6 @@
 package com.example.kjemsqrecyclebackend.service;
 
+import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.repository.PickupRequestRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,4 +12,12 @@ public class PickupRequestService {
     public PickupRequestService(PickupRequestRepository pickupRequestRepository) {
         this.pickupRequestRepository = pickupRequestRepository;
     }
+
+    public void saveFinishedPickupRequest(PickupRequest pickupRequest) {
+        pickupRequestRepository.save(pickupRequest);
+    }
+
+
+
+
 }
