@@ -11,11 +11,12 @@ import java.util.UUID;
 @Setter
 @Data
 @Entity
+@Table(name = "\"user\"")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private int id;
+    private UUID id;
 
     @Column(name = "user_id", unique = true)
     private UUID userId;
@@ -27,9 +28,11 @@ public class User {
     private String lastName;
 
     private String email;
-    private String phoneNumber;
+
+    @Column(name = "phonenumber")
+    private String phonenumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRole role;
+    @Column(name = "user_role", nullable = false)
+    private UserRole userRole;
 }

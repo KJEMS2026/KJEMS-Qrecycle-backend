@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class CompanyPickupRequestDTO {
 
-    private Integer bagsForPickUp;
+    private Long bagsToBeCollected;
 
 }

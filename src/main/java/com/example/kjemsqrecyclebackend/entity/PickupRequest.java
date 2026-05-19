@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,20 +12,31 @@ import java.time.LocalDateTime;
 @Setter
 @Data
 @Entity
+@Table(name = "pickup_request")
 public class PickupRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pickupRequestId;
-    private int bagsForPickUp;
-    private int bagsPickedUp;
-    private LocalDateTime creationDate;
-    private LocalDateTime pickUpDate;
+    private Long id;
+
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_id", nullable = false)
     private Company company;
+
+    @Column(name = "date_creation")
+    private LocalDateTime dateCreation;
+
+    @Column(name = "date_collected")
+    private LocalDateTime dateCollected;
+
+    @Column(name = "bags_to_be_collected")
+    private Long bagsToBeCollected;
+
+    @Column(name = "bags_collected")
+    private Long bagsCollected;
+
     @ManyToOne
-    @JoinColumn(name = "picked_up_by_id")
-    private User pickedUpBy;
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

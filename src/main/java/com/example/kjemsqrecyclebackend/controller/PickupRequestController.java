@@ -4,9 +4,9 @@ import com.example.kjemsqrecyclebackend.DTO.AdminPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.DTO.CompanyPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.service.IPickupRequestService;
-import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class PickupRequestController {
 
-    private IPickupRequestService pickupRequestService;
+    private final IPickupRequestService pickupRequestService;
 
     public PickupRequestController(IPickupRequestService pickupRequestService) {
         this.pickupRequestService = pickupRequestService;
@@ -29,10 +29,9 @@ public class PickupRequestController {
             @RequestBody CompanyPickupRequestDTO dto,
             Authentication auth) {
 
-        int supabaseAuthUserId = Integer.fromString(auth.getName());
+        UUID authUserId = UUID.fromString(auth.getName());
 
-        PickupRequest created =
-                pickupRequestService.createForCompany(supabaseAuthUserId, dto);
+        PickupRequest created = pickupRequestService.createForCompany(authUserId, dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
@@ -41,8 +40,7 @@ public class PickupRequestController {
     public ResponseEntity<PickupRequest> createForAdmin(
             @RequestBody AdminPickupRequestDTO dto) {
 
-        PickupRequest created =
-                pickupRequestService.createForAdmin(dto);
+        PickupRequest created = pickupRequestService.createForAdmin(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }

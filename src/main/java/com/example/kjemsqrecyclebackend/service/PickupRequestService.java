@@ -8,18 +8,18 @@ import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
 import com.example.kjemsqrecyclebackend.repository.PickupRequestRepository;
 import com.example.kjemsqrecyclebackend.repository.UserRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Service
-public class PickupRequestService implements IPickupRequestService{
+public class PickupRequestService implements IPickupRequestService {
 
-    private PickupRequestRepository pickupRequestRepository;
-    private UserRepository userRepository;
-    private CompanyRepository companyRepository;
+    private final PickupRequestRepository pickupRequestRepository;
+    private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
 
     public PickupRequestService(
             PickupRequestRepository pickupRequestRepository,
@@ -30,47 +30,35 @@ public class PickupRequestService implements IPickupRequestService{
         this.companyRepository = companyRepository;
     }
 
-
-    @Override
-    public PickupRequest createBase(Company company, Integer bags) {
-
+    private PickupRequest buildPickupRequest(Company company, Long bagsToBeCollected) {
         PickupRequest pickupRequest = new PickupRequest();
-
         pickupRequest.setCompany(company);
-        pickupRequest.setBagsForPickUp(bags != null ? bags : 0);
-
-        pickupRequest.setBagsPickedUp(0);
-        pickupRequest.setCreationDate(LocalDateTime.now());
-
-        pickupRequest.setPickUpDate(null);
-        pickupRequest.setPickedUpBy(null);
-
+        pickupRequest.setBagsToBeCollected(bagsToBeCollected != null ? bagsToBeCollected : 0L);
+        pickupRequest.setBagsCollected(0L);
+        pickupRequest.setDateCreation(LocalDateTime.now());
+        pickupRequest.setDateCollected(null);
+        pickupRequest.setUser(null);
         return pickupRequest;
     }
 
     @Override
-    public PickupRequest createForCompany( CompanyPickupRequestDTO dto) {
-
-        User user = userRepository.findBySupabaseAuthUserId(supabaseAuthUserId)
-                .orElseThrow();
+    public PickupRequest createForCompany(UUID authUserId, CompanyPickupRequestDTO dto) {
+        User user = userRepository.findByUserId(authUserId)
+                .orElseThrow(() -> new RuntimeException("Bruger ikke fundet for auth ID: " + authUserId));
 
         Company company = companyRepository.findByUser(user)
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet for bruger: " + user.getId()));
 
-        PickupRequest pickupRequest =
-                createBase(company, dto.getBagsForPickUp());
-
+        PickupRequest pickupRequest = buildPickupRequest(company, dto.getBagsToBeCollected());
         return pickupRequestRepository.save(pickupRequest);
     }
 
     @Override
     public PickupRequest createForAdmin(AdminPickupRequestDTO dto) {
-
         Company company = companyRepository.findById(dto.getCompanyId())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet med ID: " + dto.getCompanyId()));
 
-        PickupRequest pickupRequest = createBase(company, dto.getBagsForPickUp());
-
+        PickupRequest pickupRequest = buildPickupRequest(company, dto.getBagsToBeCollected());
         return pickupRequestRepository.save(pickupRequest);
     }
 }

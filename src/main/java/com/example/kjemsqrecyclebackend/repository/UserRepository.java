@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Optional<User> findBySupabaseAuthUserId(int supabaseAuthUserId);
+    Optional<User> findByUserId(UUID userId);
 }
