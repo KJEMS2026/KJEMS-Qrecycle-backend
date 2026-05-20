@@ -15,16 +15,25 @@ public class PickupRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pickupRequestId;
-    private int bagsForPickUp;
-    private int bagsPickedUp;
-    private LocalDateTime creationDate;
-    private LocalDateTime pickUpDate;
+    private int id;
+
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_id", nullable = false)
     private Company company;
+
+    @Column(name = "date_creation")
+    private LocalDateTime creationDate;
+    @Column(name = "date_collected")
+    private LocalDateTime pickUpDate;
+
+    @Column(name = "bags_to_be_collected")
+    private int bagsForPickUp;
+
+    @Column(name = "bags_collected")
+    private int bagsPickedUp;
+
     @ManyToOne
-    @JoinColumn(name = "picked_up_by_id")
+    @JoinColumn(name = "user_id")
     private User pickedUpBy;
 
 }

@@ -19,6 +19,10 @@ public class Company {
 
     private String address;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
+
     public Company(String companyName, String address) {
         this.companyName = companyName;
         this.address = address;

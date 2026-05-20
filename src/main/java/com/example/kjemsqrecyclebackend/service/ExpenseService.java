@@ -4,7 +4,7 @@ import com.example.kjemsqrecyclebackend.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExpenseService {
+public class ExpenseService implements IExpenseService {
 
     private ExpenseRepository expenseRepository;
 

@@ -4,7 +4,7 @@ import com.example.kjemsqrecyclebackend.repository.PickupRequestRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PickupRequestService {
+public class PickupRequestService implements IPickupRequestService {
 
     private PickupRequestRepository pickupRequestRepository;
 
