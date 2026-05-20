@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Setter
 @Data
 @Entity
+@Table(name = "expense")
 public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String image;
     private String title;
     private String description;
@@ -26,5 +26,5 @@ public class Expense {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User createdBy;
 }

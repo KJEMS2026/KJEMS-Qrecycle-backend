@@ -22,13 +22,9 @@ public class User {
 
     @Column(name = "last_name")
     private String lastName;
-
     private String email;
-
-    @Column(name = "phonenumber")
     private String phonenumber;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)
-    private UserRole userRole;
+    private UserRole role;
 }

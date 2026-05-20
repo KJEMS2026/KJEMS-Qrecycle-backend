@@ -6,13 +6,16 @@ import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
+import com.example.kjemsqrecyclebackend.dto.ActivePickupRequestDTO;
 import com.example.kjemsqrecyclebackend.repository.PickupRequestRepository;
 import com.example.kjemsqrecyclebackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.UUID;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PickupRequestService implements IPickupRequestService {
@@ -60,5 +63,20 @@ public class PickupRequestService implements IPickupRequestService {
 
         PickupRequest pickupRequest = buildPickupRequest(company, dto.getBagsToBeCollected());
         return pickupRequestRepository.save(pickupRequest);
+    }
+
+    @Override
+    public List<ActivePickupRequestDTO> getActivePickupRequests() {
+        List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNull();
+        List<ActivePickupRequestDTO> activePickupRequests = new ArrayList<>();
+
+        for (PickupRequest pickupRequest : pickupRequests) {
+            ActivePickupRequestDTO activePickupRequestDTO = new ActivePickupRequestDTO();
+            activePickupRequestDTO.setBagsToBeCollected(pickupRequest.getBagsToBeCollected());
+            activePickupRequestDTO.setCompanyName(pickupRequest.getCompany().getCompanyName());
+            activePickupRequestDTO.setCreatedAt(pickupRequest.getDateCreation());
+            activePickupRequests.add(activePickupRequestDTO);
+        }
+        return activePickupRequests;
     }
 }

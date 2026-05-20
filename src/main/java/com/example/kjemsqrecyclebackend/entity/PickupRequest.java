@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Data
 @Entity
-@Table(name = "pickup_request")
+@Table (name = "pickup_request")
 public class PickupRequest {
 
     @Id
@@ -24,7 +24,6 @@ public class PickupRequest {
 
     @Column(name = "date_creation")
     private LocalDateTime dateCreation;
-
     @Column(name = "date_collected")
     private LocalDateTime dateCollected;
 
@@ -32,7 +31,7 @@ public class PickupRequest {
     private int bagsToBeCollected;
 
     @Column(name = "bags_collected")
-    private int bagsCollected;
+    private Integer bagsCollected;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
