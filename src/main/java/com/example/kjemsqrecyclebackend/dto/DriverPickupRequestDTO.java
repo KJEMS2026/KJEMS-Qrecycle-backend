@@ -2,9 +2,13 @@ package com.example.kjemsqrecyclebackend.dto;
 
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.User;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 
 public class DriverPickupRequestDTO {
 
