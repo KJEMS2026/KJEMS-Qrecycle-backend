@@ -43,7 +43,7 @@ public class PickupRequestService implements IPickupRequestService {
 
     @Override
     public PickupRequest createForCompany(UUID authUserId, CompanyPickupRequestDTO dto) {
-        User user = userRepository.findByUserId(authUserId)
+        User user = userRepository.findById(authUserId)
                 .orElseThrow(() -> new RuntimeException("Bruger ikke fundet for auth ID: " + authUserId));
 
         Company company = companyRepository.findByUser(user)
