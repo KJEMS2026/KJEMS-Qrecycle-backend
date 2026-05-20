@@ -1,7 +1,7 @@
 package com.example.kjemsqrecyclebackend.service;
 
-import com.example.kjemsqrecyclebackend.DTO.AdminPickupRequestDTO;
-import com.example.kjemsqrecyclebackend.DTO.CompanyPickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.AdminPickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.CompanyPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.entity.User;
@@ -37,7 +37,6 @@ public class PickupRequestService implements IPickupRequestService {
         pickupRequest.setBagsCollected(0L);
         pickupRequest.setDateCreation(LocalDateTime.now());
         pickupRequest.setDateCollected(null);
-        pickupRequest.setUser(null);
         return pickupRequest;
     }
 
@@ -50,6 +49,7 @@ public class PickupRequestService implements IPickupRequestService {
                 .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet for bruger: " + user.getId()));
 
         PickupRequest pickupRequest = buildPickupRequest(company, dto.getBagsToBeCollected());
+        pickupRequest.setUser(user);
         return pickupRequestRepository.save(pickupRequest);
     }
 

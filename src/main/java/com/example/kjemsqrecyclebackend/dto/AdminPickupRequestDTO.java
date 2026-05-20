@@ -1,4 +1,4 @@
-package com.example.kjemsqrecyclebackend.DTO;
+package com.example.kjemsqrecyclebackend.dto;
 
 
 import lombok.Getter;
