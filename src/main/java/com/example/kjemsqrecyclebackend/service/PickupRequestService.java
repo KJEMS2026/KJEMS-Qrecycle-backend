@@ -30,11 +30,11 @@ public class PickupRequestService implements IPickupRequestService {
         this.companyRepository = companyRepository;
     }
 
-    private PickupRequest buildPickupRequest(Company company, Long bagsToBeCollected) {
+    private PickupRequest buildPickupRequest(Company company, int bagsToBeCollected) {
         PickupRequest pickupRequest = new PickupRequest();
         pickupRequest.setCompany(company);
-        pickupRequest.setBagsToBeCollected(bagsToBeCollected != null ? bagsToBeCollected : 0L);
-        pickupRequest.setBagsCollected(0L);
+        pickupRequest.setBagsToBeCollected(bagsToBeCollected);
+        pickupRequest.setBagsCollected(0);
         pickupRequest.setDateCreation(LocalDateTime.now());
         pickupRequest.setDateCollected(null);
         return pickupRequest;

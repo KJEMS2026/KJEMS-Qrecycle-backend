@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class AdminPickupRequestDTO {
 
-    private Long bagsToBeCollected;
-    private Long companyId;
+    private int bagsToBeCollected;
+    private int companyId;
 
 }

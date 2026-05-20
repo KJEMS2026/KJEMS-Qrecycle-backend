@@ -11,6 +11,6 @@ import java.util.UUID;
 public class CompanyPickupRequestDTO {
 
     private UUID userId;
-    private Long bagsToBeCollected;
+    private int bagsToBeCollected;
 
 }

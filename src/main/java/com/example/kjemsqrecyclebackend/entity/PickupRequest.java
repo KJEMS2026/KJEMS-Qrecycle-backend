@@ -16,7 +16,7 @@ public class PickupRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
@@ -29,10 +29,10 @@ public class PickupRequest {
     private LocalDateTime dateCollected;
 
     @Column(name = "bags_to_be_collected")
-    private Long bagsToBeCollected;
+    private int bagsToBeCollected;
 
     @Column(name = "bags_collected")
-    private Long bagsCollected;
+    private int bagsCollected;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
