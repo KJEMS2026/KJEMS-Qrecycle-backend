@@ -27,10 +27,10 @@ public class PickupRequest {
     private LocalDateTime pickUpDate;
 
     @Column(name = "bags_to_be_collected")
-    private int bagsForPickUp;
+    private int bagsToBeCollected;
 
     @Column(name = "bags_collected")
-    private int bagsPickedUp;
+    private int bagsCollected;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
