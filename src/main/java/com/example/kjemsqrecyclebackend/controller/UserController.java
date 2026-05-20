@@ -10,7 +10,10 @@ public class UserController {
 
     private IUserService userService;
 
+    /*
     public UserController(IUserService userService) {
         this.userService = userService;
     }
+
+     */
 }
