@@ -22,9 +22,9 @@ public class PickupRequest {
     private Company company;
 
     @Column(name = "date_creation")
-    private LocalDateTime creationDate;
+    private LocalDateTime dateCreation;
     @Column(name = "date_collected")
-    private LocalDateTime pickUpDate;
+    private LocalDateTime dateCollected;
 
     @Column(name = "bags_to_be_collected")
     private int bagsToBeCollected;
@@ -34,6 +34,6 @@ public class PickupRequest {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User pickedUpBy;
+    private User user;
 
 }
