@@ -9,7 +9,9 @@ import lombok.*;
 @Setter
 @Data
 @Entity
+@Table (name = "company")
 public class Company {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,6 +20,10 @@ public class Company {
     private String companyName;
 
     private String address;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
     public Company(String companyName, String address) {
         this.companyName = companyName;
