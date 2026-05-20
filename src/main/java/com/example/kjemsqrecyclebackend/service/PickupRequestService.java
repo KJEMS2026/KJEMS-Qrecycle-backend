@@ -37,7 +37,7 @@ public class PickupRequestService implements IPickupRequestService {
         PickupRequest pickupRequest = new PickupRequest();
         pickupRequest.setCompany(company);
         pickupRequest.setBagsToBeCollected(bagsToBeCollected);
-        pickupRequest.setBagsCollected(0);
+        pickupRequest.setBagsCollected(null);
         pickupRequest.setDateCreation(LocalDateTime.now());
         pickupRequest.setDateCollected(null);
         return pickupRequest;
