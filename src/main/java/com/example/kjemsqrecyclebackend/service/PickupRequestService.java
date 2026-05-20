@@ -67,7 +67,7 @@ public class PickupRequestService implements IPickupRequestService {
 
     @Override
     public List<ActivePickupRequestDTO> getActivePickupRequests() {
-        List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsToBeCollectedIsNull();
+        List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNull();
         List<ActivePickupRequestDTO> activePickupRequests = new ArrayList<>();
 
         for (PickupRequest pickupRequest : pickupRequests) {

@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @Data
 @Entity
+@Table (name = "company")
 public class Company {
 
     @Id
