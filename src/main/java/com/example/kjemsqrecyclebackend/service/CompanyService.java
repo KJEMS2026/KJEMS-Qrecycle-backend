@@ -24,6 +24,7 @@ public class CompanyService implements ICompanyService {
         for(Company company : companies) {
             CompanyDTO companyDTO = new CompanyDTO();
             companyDTO.setId(company.getId());
+            companyDTO.setName(company.getCompanyName());
             companiesDTO.add(companyDTO);
         }
         return companiesDTO;
