@@ -11,6 +11,8 @@ import java.util.List;
 @Service
 public class DriverService implements IDriverService {
 
+    private static final String FINAL_STOP = "Retortvej 38, 2500 København";
+
     private final PickupRequestRepository pickupRequestRepository;
 
     public DriverService(PickupRequestRepository pickupRequestRepository) {
@@ -29,6 +31,10 @@ public class DriverService implements IDriverService {
             routeStop.setCreatedAt(request.getDateCreation());
             routeStops.add(routeStop);
         }
+        ActivePickupRequestDTO finalStop = new ActivePickupRequestDTO();
+        finalStop.setAddress(FINAL_STOP);
+        routeStops.add(finalStop);
+
         return routeStops;
     }
 }
