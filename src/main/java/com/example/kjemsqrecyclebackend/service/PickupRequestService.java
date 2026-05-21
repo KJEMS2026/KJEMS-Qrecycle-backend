@@ -79,4 +79,24 @@ public class PickupRequestService implements IPickupRequestService {
         }
         return activePickupRequests;
     }
+
+    @Override
+    public List<CompanyPickupRequestDTO> getActivePickupRequestsCompany(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Bruger ikke fundet for auth ID: " + userId));
+
+        Company company = companyRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet for bruger: " + user.getId()));
+
+        List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNullAndCompany_Id(company.getId());
+        List<CompanyPickupRequestDTO> activePickupRequestsCompany = new ArrayList<>();
+
+        for (PickupRequest pickupRequest : pickupRequests) {
+            CompanyPickupRequestDTO companyPickupRequestDTO = new CompanyPickupRequestDTO();
+            companyPickupRequestDTO.setBagsToBeCollected(pickupRequest.getBagsToBeCollected());
+            activePickupRequestsCompany.add(companyPickupRequestDTO);
+        }
+
+        return activePickupRequestsCompany;
+    }
 }
