@@ -9,6 +9,7 @@ import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
 import com.example.kjemsqrecyclebackend.dto.ActivePickupRequestDTO;
 import com.example.kjemsqrecyclebackend.repository.PickupRequestRepository;
 import com.example.kjemsqrecyclebackend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,6 +58,7 @@ public class PickupRequestService implements IPickupRequestService {
     }
 
     @Override
+    @Transactional
     public PickupRequest createForAdmin(AdminPickupRequestDTO dto) {
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet med ID: " + dto.getCompanyId()));
