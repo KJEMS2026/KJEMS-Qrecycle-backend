@@ -1,7 +1,9 @@
 package com.example.kjemsqrecyclebackend.service;
 
+import com.example.kjemsqrecyclebackend.DTOMapper.PickupRequestMapper;
 import com.example.kjemsqrecyclebackend.dto.AdminPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyPickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.DriverPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.entity.User;
@@ -23,14 +25,17 @@ public class PickupRequestService implements IPickupRequestService {
     private final PickupRequestRepository pickupRequestRepository;
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
+    private final PickupRequestMapper pickupRequestMapper;
 
     public PickupRequestService(
             PickupRequestRepository pickupRequestRepository,
             UserRepository userRepository,
-            CompanyRepository companyRepository) {
+            CompanyRepository companyRepository,
+            PickupRequestMapper pickupRequestMapper) {
         this.pickupRequestRepository = pickupRequestRepository;
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
+        this.pickupRequestMapper = pickupRequestMapper;
     }
 
     private PickupRequest buildPickupRequest(Company company, int bagsToBeCollected) {
@@ -79,4 +84,19 @@ public class PickupRequestService implements IPickupRequestService {
         }
         return activePickupRequests;
     }
+
+    public PickupRequest updatePickupRequestAsCompleted(DriverPickupRequestDTO driverPickupRequestDTO) {
+        //Possible exception occurence: What if not all a setter method in toEntity operates on a null value?
+        PickupRequest pickupRequest = pickupRequestMapper.toEntity(driverPickupRequestDTO);
+
+        try {
+            return pickupRequestRepository.save(pickupRequest);
+        }
+        catch (IllegalArgumentException e) {
+            //Note: e is attatched to the parameters of the RuntimeException, as you'd otherwise lose the
+            //      what caused the new exception to exist. Usefull in debugging.
+            throw new RuntimeException("Der skete en fejl i at gemme status på denne afhentning", e);
+        }
+    }
+
 }

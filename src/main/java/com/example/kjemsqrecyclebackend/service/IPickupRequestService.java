@@ -1,6 +1,7 @@
 package com.example.kjemsqrecyclebackend.service;
 
 import com.example.kjemsqrecyclebackend.dto.ActivePickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.DriverPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.dto.AdminPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyPickupRequestDTO;
@@ -17,4 +18,5 @@ public interface IPickupRequestService {
 
     PickupRequest createForCompany(UUID authUserId, CompanyPickupRequestDTO dto);
     PickupRequest createForAdmin(AdminPickupRequestDTO dto);
+    PickupRequest updatePickupRequestAsCompleted(DriverPickupRequestDTO dto);
 }
