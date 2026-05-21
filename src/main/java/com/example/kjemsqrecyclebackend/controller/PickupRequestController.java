@@ -2,6 +2,7 @@ package com.example.kjemsqrecyclebackend.controller;
 
 import com.example.kjemsqrecyclebackend.dto.AdminPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyPickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.DriverPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.dto.ActivePickupRequestDTO;
 import com.example.kjemsqrecyclebackend.service.IPickupRequestService;
@@ -43,4 +44,23 @@ public class PickupRequestController {
     public List<ActivePickupRequestDTO> getActivePickupRequests() {
         return pickupRequestService.getActivePickupRequests();
     }
+
+    //Possible endpoint for getmapping
+    //fetches DriverPickupRequestDTOs
+    @GetMapping("pickup-requests/pickup")
+
+
+    //Updates a PickupRequest entity, with a fully populated DrivePickupRequestDTO
+    @PostMapping("/pickup-requests/pickup/{id}")
+    public ResponseEntity updatePickupRequest(@RequestBody DriverPickupRequestDTO driverPickupRequestDTO, @PathVariable int id) {
+
+        try {
+            pickupRequestService.updatePickupRequestAsCompleted(driverPickupRequestDTO);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
+
