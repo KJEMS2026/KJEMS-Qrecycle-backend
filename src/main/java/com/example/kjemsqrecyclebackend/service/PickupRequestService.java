@@ -37,7 +37,7 @@ public class PickupRequestService implements IPickupRequestService {
         PickupRequest pickupRequest = new PickupRequest();
         pickupRequest.setCompany(company);
         pickupRequest.setBagsToBeCollected(bagsToBeCollected);
-        pickupRequest.setBagsCollected(0);
+        pickupRequest.setBagsCollected(null);
         pickupRequest.setDateCreation(LocalDateTime.now());
         pickupRequest.setDateCollected(null);
         return pickupRequest;
@@ -52,7 +52,7 @@ public class PickupRequestService implements IPickupRequestService {
                 .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet for bruger: " + user.getId()));
 
         PickupRequest pickupRequest = buildPickupRequest(company, dto.getBagsToBeCollected());
-        pickupRequest.setUser(user);
+        pickupRequest.setUser(null);
         return pickupRequestRepository.save(pickupRequest);
     }
 
