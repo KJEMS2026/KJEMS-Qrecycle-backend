@@ -33,6 +33,7 @@ public class DriverService implements IDriverService {
         }
         ActivePickupRequestDTO finalStop = new ActivePickupRequestDTO();
         finalStop.setAddress(FINAL_STOP);
+        finalStop.setCompanyName("Qrecycle");
         routeStops.add(finalStop);
 
         return routeStops;
