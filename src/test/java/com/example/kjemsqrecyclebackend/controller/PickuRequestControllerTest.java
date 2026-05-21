@@ -1,5 +1,6 @@
 package com.example.kjemsqrecyclebackend.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import com.example.kjemsqrecyclebackend.DTOMapper.PickupRequestMapper;
 import com.example.kjemsqrecyclebackend.dto.DriverPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
@@ -9,13 +10,21 @@ import com.example.kjemsqrecyclebackend.entity.UserRole;
 import com.example.kjemsqrecyclebackend.service.IPickupRequestService;
 import com.example.kjemsqrecyclebackend.service.PickupRequestService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
 public class PickuRequestControllerTest {
@@ -23,9 +32,8 @@ public class PickuRequestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
-    @MockitoBean
-    private IPickupRequestService iPickupRequestService;
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockitoBean
     private PickupRequestService pickupRequestService;
@@ -86,4 +94,30 @@ public class PickuRequestControllerTest {
         testDriverPickupRequestDTO.setPickedUpBy(testUser);
 
     }
+/*
+    @Test
+    void updatePickupRequest_ShouldReturn200_WhenUpdateSucceeds() throws Exception {
+
+        doNothing().when(pickupRequestService)
+                .updatePickupRequestAsCompleted(any(DriverPickupRequestDTO.class));
+
+        mockMvc.perform(post("/pickup-requests/pickup/100")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testDriverPickupRequestDTO)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updatePickupRequest_ShouldReturn500_WhenServiceThrowsException() throws Exception {
+
+        doThrow(new RuntimeException())
+                .when(pickupRequestService)
+                .updatePickupRequestAsCompleted(any(DriverPickupRequestDTO.class));
+
+        mockMvc.perform(post("/pickup-requests/pickup/100")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testDriverPickupRequestDTO)))
+                .andExpect(status().isInternalServerError());
+    }
+    /*
 }
