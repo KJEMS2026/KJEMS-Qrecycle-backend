@@ -3,7 +3,9 @@ package com.example.kjemsqrecyclebackend.DTOMapper;
 
 import com.example.kjemsqrecyclebackend.dto.DriverPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PickupRequestMapper {
 
     public PickupRequest toEntity(DriverPickupRequestDTO companyPickupRequestDTO) {
