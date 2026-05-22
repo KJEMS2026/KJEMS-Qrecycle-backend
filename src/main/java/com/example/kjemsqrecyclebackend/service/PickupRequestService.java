@@ -54,11 +54,12 @@ public class PickupRequestService implements IPickupRequestService {
                 .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet for bruger: " + user.getId()));
 
         PickupRequest pickupRequest = buildPickupRequest(company, dto.getBagsToBeCollected());
-        pickupRequest.setUser(user);
+        pickupRequest.setUser(null);
         return pickupRequestRepository.save(pickupRequest);
     }
 
     @Override
+    @Transactional
     public PickupRequest createForAdmin(AdminPickupRequestDTO dto) {
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet med ID: " + dto.getCompanyId()));
@@ -69,7 +70,7 @@ public class PickupRequestService implements IPickupRequestService {
 
     @Override
     public List<ActivePickupRequestDTO> getActivePickupRequests() {
-        List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNull();
+        List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNullOrderByDateCreationDesc();
         List<ActivePickupRequestDTO> activePickupRequests = new ArrayList<>();
 
         for (PickupRequest pickupRequest : pickupRequests) {
@@ -80,6 +81,26 @@ public class PickupRequestService implements IPickupRequestService {
             activePickupRequests.add(activePickupRequestDTO);
         }
         return activePickupRequests;
+    }
+
+    @Override
+    public List<CompanyPickupRequestDTO> getActivePickupRequestsCompany(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Bruger ikke fundet for auth ID: " + userId));
+
+        Company company = companyRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet for bruger: " + user.getId()));
+
+        List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNullAndCompany_Id(company.getId());
+        List<CompanyPickupRequestDTO> activePickupRequestsCompany = new ArrayList<>();
+
+        for (PickupRequest pickupRequest : pickupRequests) {
+            CompanyPickupRequestDTO companyPickupRequestDTO = new CompanyPickupRequestDTO();
+            companyPickupRequestDTO.setBagsToBeCollected(pickupRequest.getBagsToBeCollected());
+            activePickupRequestsCompany.add(companyPickupRequestDTO);
+        }
+
+        return activePickupRequestsCompany;
     }
 
     @Override

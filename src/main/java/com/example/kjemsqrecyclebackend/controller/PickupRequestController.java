@@ -52,4 +52,9 @@ public class PickupRequestController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(updated);
     }
+
+    @GetMapping("/active-pickup-requests-company/{userId}")
+    public List<CompanyPickupRequestDTO> getActivePickupRequestsCompany(@PathVariable UUID userId) {
+        return pickupRequestService.getActivePickupRequestsCompany(userId);
+    }
 }
