@@ -3,6 +3,7 @@ package com.example.kjemsqrecyclebackend.service;
 import com.example.kjemsqrecyclebackend.dto.AdminPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.dto.StatsDTO;
+import com.example.kjemsqrecyclebackend.dto.RegisterPantDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.entity.User;
@@ -101,6 +102,21 @@ public class PickupRequestService implements IPickupRequestService {
         }
 
         return activePickupRequestsCompany;
+    }
+
+    @Override
+    @Transactional
+    public PickupRequest updatePickupRequest(RegisterPantDTO dto, UUID driverId){
+        PickupRequest pickupRequest = pickupRequestRepository.findById(dto.getPickupRequestId()).orElseThrow();
+        User driver = userRepository.findById(driverId).orElseThrow();
+
+
+        pickupRequest.setBagsCollected(dto.getBagsCollected());
+        pickupRequest.setDateCollected(dto.getDateCollected());
+        pickupRequest.setUser(driver);
+        pickupRequestRepository.save(pickupRequest);
+
+        return pickupRequest;
     }
 
     @Override
