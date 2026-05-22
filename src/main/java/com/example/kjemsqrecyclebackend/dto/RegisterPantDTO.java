@@ -11,5 +11,4 @@ public class RegisterPantDTO {
     private int pickupRequestId;
     private int bagsCollected;
     private LocalDateTime dateCollected;
-    private User user;
 }
