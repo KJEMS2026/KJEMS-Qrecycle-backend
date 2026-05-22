@@ -1,12 +1,14 @@
 package com.example.kjemsqrecyclebackend.service;
 
-import com.example.kjemsqrecyclebackend.dto.ActivePickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.RouteStopDTO;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.repository.PickupRequestRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class DriverService implements IDriverService {
@@ -20,18 +22,23 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public List<ActivePickupRequestDTO> getRouteAddresses() {
+    public List<RouteStopDTO> getRouteAddresses() {
         List<PickupRequest> requests = pickupRequestRepository.findAllByBagsCollectedIsNull();
-        List<ActivePickupRequestDTO> routeStops = new ArrayList<>();
+        List<RouteStopDTO> routeStops = new ArrayList<>();
+        Set<String> seenAddresses = new HashSet<>();
         for (PickupRequest request : requests) {
-            ActivePickupRequestDTO routeStop = new ActivePickupRequestDTO();
+            String address = request.getCompany().getAddress();
+            if (seenAddresses.contains(address)) {
+                continue;
+            }
+            seenAddresses.add(address);
+            RouteStopDTO routeStop = new RouteStopDTO();
             routeStop.setCompanyName(request.getCompany().getCompanyName());
-            routeStop.setAddress(request.getCompany().getAddress());
-            routeStop.setBagsToBeCollected(request.getBagsToBeCollected());
-            routeStop.setCreatedAt(request.getDateCreation());
+            routeStop.setAddress(address);
+            routeStop.setPickupRequestId(request.getId());
             routeStops.add(routeStop);
         }
-        ActivePickupRequestDTO finalStop = new ActivePickupRequestDTO();
+        RouteStopDTO finalStop = new RouteStopDTO();
         finalStop.setAddress(FINAL_STOP);
         finalStop.setCompanyName("Qrecycle");
         routeStops.add(finalStop);

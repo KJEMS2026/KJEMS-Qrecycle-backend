@@ -1,6 +1,6 @@
 package com.example.kjemsqrecyclebackend.controller;
 
-import com.example.kjemsqrecyclebackend.dto.ActivePickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.RouteStopDTO;
 import com.example.kjemsqrecyclebackend.service.IDriverService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class DriverController {
     }
 
     @GetMapping("/driver/route")
-    public List<ActivePickupRequestDTO> getRouteAddresses() {
+    public List<RouteStopDTO> getRouteAddresses() {
         return driverService.getRouteAddresses();
     }
 }

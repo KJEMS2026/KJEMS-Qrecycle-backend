@@ -11,5 +11,4 @@ public class ActivePickupRequestDTO {
     private String companyName;
     private LocalDateTime createdAt;
     private int bagsToBeCollected;
-    private String address;
 }
