@@ -10,6 +10,6 @@ import java.util.List;
 public interface PickupRequestRepository extends JpaRepository<PickupRequest, Integer> {
     List<PickupRequest> findAllByBagsCollectedIsNullOrderByDateCreationDesc();
     List<PickupRequest> findAllByBagsCollectedIsNullAndCompany_Id(int companyId);
-
     List<PickupRequest> findAllByBagsCollectedIsNull();
+    List<PickupRequest> findAllByBagsCollectedIsNotNull();
 }
