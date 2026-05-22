@@ -9,6 +9,7 @@ import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
 import com.example.kjemsqrecyclebackend.dto.ActivePickupRequestDTO;
 import com.example.kjemsqrecyclebackend.repository.PickupRequestRepository;
 import com.example.kjemsqrecyclebackend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,6 +58,7 @@ public class PickupRequestService implements IPickupRequestService {
     }
 
     @Override
+    @Transactional
     public PickupRequest createForAdmin(AdminPickupRequestDTO dto) {
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet med ID: " + dto.getCompanyId()));
@@ -78,5 +80,25 @@ public class PickupRequestService implements IPickupRequestService {
             activePickupRequests.add(activePickupRequestDTO);
         }
         return activePickupRequests;
+    }
+
+    @Override
+    public List<CompanyPickupRequestDTO> getActivePickupRequestsCompany(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Bruger ikke fundet for auth ID: " + userId));
+
+        Company company = companyRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Virksomhed ikke fundet for bruger: " + user.getId()));
+
+        List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNullAndCompany_Id(company.getId());
+        List<CompanyPickupRequestDTO> activePickupRequestsCompany = new ArrayList<>();
+
+        for (PickupRequest pickupRequest : pickupRequests) {
+            CompanyPickupRequestDTO companyPickupRequestDTO = new CompanyPickupRequestDTO();
+            companyPickupRequestDTO.setBagsToBeCollected(pickupRequest.getBagsToBeCollected());
+            activePickupRequestsCompany.add(companyPickupRequestDTO);
+        }
+
+        return activePickupRequestsCompany;
     }
 }

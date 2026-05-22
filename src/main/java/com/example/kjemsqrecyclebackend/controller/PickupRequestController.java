@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -42,5 +43,10 @@ public class PickupRequestController {
     @GetMapping("/active-pickup-requests")
     public List<ActivePickupRequestDTO> getActivePickupRequests() {
         return pickupRequestService.getActivePickupRequests();
+    }
+
+    @GetMapping("/active-pickup-requests-company/{userId}")
+    public List<CompanyPickupRequestDTO> getActivePickupRequestsCompany(@PathVariable UUID userId) {
+        return pickupRequestService.getActivePickupRequestsCompany(userId);
     }
 }

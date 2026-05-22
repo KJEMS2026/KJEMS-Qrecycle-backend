@@ -14,6 +14,7 @@ import java.util.UUID;
 public interface IPickupRequestService {
 
     List<ActivePickupRequestDTO> getActivePickupRequests();
+    List<CompanyPickupRequestDTO> getActivePickupRequestsCompany(UUID userId);
 
     PickupRequest createForCompany(UUID authUserId, CompanyPickupRequestDTO dto);
     PickupRequest createForAdmin(AdminPickupRequestDTO dto);
