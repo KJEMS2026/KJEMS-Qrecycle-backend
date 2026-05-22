@@ -2,6 +2,7 @@ package com.example.kjemsqrecyclebackend.service;
 
 import com.example.kjemsqrecyclebackend.dto.AdminPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyPickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.StatsDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.entity.User;
@@ -100,5 +101,25 @@ public class PickupRequestService implements IPickupRequestService {
         }
 
         return activePickupRequestsCompany;
+    }
+
+    @Override
+    @Transactional
+    public List<StatsDTO> getStats() {
+        List<PickupRequest> completedPickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNotNull();
+        List<StatsDTO> statsDTOList = new ArrayList<>();
+        for (PickupRequest completedPickupRequest : completedPickupRequests) {
+            StatsDTO stats = new StatsDTO();
+            stats.setDateCollected(completedPickupRequest.getDateCollected());
+            stats.setCompanyName(completedPickupRequest.getCompany().getCompanyName());
+            stats.setBagsToBeCollected(completedPickupRequest.getBagsToBeCollected());
+            stats.setBagsCollected(completedPickupRequest.getBagsCollected());
+            int differenceInBags = completedPickupRequest.getBagsToBeCollected() - completedPickupRequest.getBagsCollected();
+            stats.setDifferenceInBags(differenceInBags);
+            String fullName = completedPickupRequest.getUser().getFirstName() + completedPickupRequest.getUser().getLastName();
+            stats.setFullName(fullName);
+            statsDTOList.add(stats);
+        }
+        return statsDTOList;
     }
 }
