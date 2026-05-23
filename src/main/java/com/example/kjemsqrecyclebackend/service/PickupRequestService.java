@@ -130,7 +130,7 @@ public class PickupRequestService implements IPickupRequestService {
             stats.setCompanyName(completedPickupRequest.getCompany().getCompanyName());
             stats.setBagsToBeCollected(completedPickupRequest.getBagsToBeCollected());
             stats.setBagsCollected(completedPickupRequest.getBagsCollected());
-            int differenceInBags = completedPickupRequest.getBagsToBeCollected() - completedPickupRequest.getBagsCollected();
+            int differenceInBags = completedPickupRequest.getBagsCollected() - completedPickupRequest.getBagsToBeCollected();
             stats.setDifferenceInBags(differenceInBags);
             String fullName = completedPickupRequest.getUser().getFirstName() + " " + completedPickupRequest.getUser().getLastName();
             stats.setFullName(fullName);
