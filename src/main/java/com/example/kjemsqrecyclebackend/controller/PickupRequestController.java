@@ -2,6 +2,7 @@ package com.example.kjemsqrecyclebackend.controller;
 
 import com.example.kjemsqrecyclebackend.dto.AdminPickupRequestDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyPickupRequestDTO;
+import com.example.kjemsqrecyclebackend.dto.StatsDTO;
 import com.example.kjemsqrecyclebackend.dto.RegisterPantDTO;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.dto.ActivePickupRequestDTO;
@@ -56,5 +57,10 @@ public class PickupRequestController {
     @GetMapping("/active-pickup-requests-company/{userId}")
     public List<CompanyPickupRequestDTO> getActivePickupRequestsCompany(@PathVariable UUID userId) {
         return pickupRequestService.getActivePickupRequestsCompany(userId);
+    }
+
+    @GetMapping("/stats")
+    public List<StatsDTO> getStats() {
+        return pickupRequestService.getStats();
     }
 }
