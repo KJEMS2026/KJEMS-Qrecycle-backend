@@ -7,7 +7,6 @@ import java.util.UUID;
 
 @Data
 public class ExpenseRegisterDTO {
-    private UUID id;
     private String image;
     private String title;
     private String description;
