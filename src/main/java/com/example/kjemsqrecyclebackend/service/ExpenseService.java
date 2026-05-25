@@ -6,6 +6,7 @@ import com.example.kjemsqrecyclebackend.entity.Expense;
 import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.repository.ExpenseRepository;
 import com.example.kjemsqrecyclebackend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,8 @@ public class ExpenseService implements IExpenseService {
         this.userRepository = userRepository;
     }
 
+    @Override
+    @Transactional
     public List<ExpenseStatsDTO> getExpenses() {
         List<Expense> expenses = expenseRepository.findAll();
         List<ExpenseStatsDTO> expensesDTO = new ArrayList<>();
@@ -41,6 +44,8 @@ public class ExpenseService implements IExpenseService {
         return expensesDTO;
     }
 
+    @Override
+    @Transactional
     public ExpenseRegisterDTO saveExpense(ExpenseRegisterDTO expenseDTO, UUID driverId) {
         User driver = userRepository.findById(driverId).orElseThrow();
         Expense expense = new Expense();
