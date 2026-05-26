@@ -78,6 +78,7 @@ public class PickupRequestService implements IPickupRequestService {
 
         for (PickupRequest pickupRequest : pickupRequests) {
             ActivePickupRequestDTO activePickupRequestDTO = new ActivePickupRequestDTO();
+            activePickupRequestDTO.setId(pickupRequest.getId());
             activePickupRequestDTO.setBagsToBeCollected(pickupRequest.getBagsToBeCollected());
             activePickupRequestDTO.setCompanyName(pickupRequest.getCompany().getCompanyName());
             activePickupRequestDTO.setCreatedAt(pickupRequest.getDateCreation());
