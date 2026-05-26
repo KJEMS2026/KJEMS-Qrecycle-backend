@@ -78,6 +78,7 @@ public class PickupRequestService implements IPickupRequestService {
 
         for (PickupRequest pickupRequest : pickupRequests) {
             ActivePickupRequestDTO activePickupRequestDTO = new ActivePickupRequestDTO();
+            activePickupRequestDTO.setId(pickupRequest.getId());
             activePickupRequestDTO.setBagsToBeCollected(pickupRequest.getBagsToBeCollected());
             activePickupRequestDTO.setCompanyName(pickupRequest.getCompany().getCompanyName());
             activePickupRequestDTO.setCreatedAt(pickupRequest.getDateCreation());
@@ -100,6 +101,7 @@ public class PickupRequestService implements IPickupRequestService {
 
         for (PickupRequest pickupRequest : pickupRequests) {
             CompanyPickupRequestDTO companyPickupRequestDTO = new CompanyPickupRequestDTO();
+            companyPickupRequestDTO.setActivePickupRequestId(pickupRequest.getId());
             companyPickupRequestDTO.setBagsToBeCollected(pickupRequest.getBagsToBeCollected());
             activePickupRequestsCompany.add(companyPickupRequestDTO);
         }
@@ -140,5 +142,12 @@ public class PickupRequestService implements IPickupRequestService {
             statsDTOList.add(stats);
         }
         return statsDTOList;
+    }
+
+    @Override
+    @Transactional
+    public void deleteActivePickupRequest(int activePickupRequestId) {
+        PickupRequest activePickupRequest = pickupRequestRepository.findById(activePickupRequestId).orElseThrow();
+        pickupRequestRepository.delete(activePickupRequest);
     }
 }
