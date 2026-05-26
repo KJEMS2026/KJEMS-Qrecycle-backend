@@ -1,5 +1,6 @@
 package com.example.kjemsqrecyclebackend.service;
 
+import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
 import com.example.kjemsqrecyclebackend.dto.UserDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.User;
@@ -38,5 +39,11 @@ public class UserService implements IUserService{
         return dtoUsers;
     }
 
+    @Override
+    public UserCreationDTO saveUser(UserCreationDTO dto){
+        User user = new User();
+
+        return ;
+    }
 
 }

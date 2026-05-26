@@ -1,6 +1,8 @@
 package com.example.kjemsqrecyclebackend.service;
 
+import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
 import com.example.kjemsqrecyclebackend.dto.UserDTO;
+import com.example.kjemsqrecyclebackend.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,5 +10,7 @@ import java.util.List;
 @Service
 public interface IUserService {
 
-    public List<UserDTO> getAllUsers();
+    List<UserDTO> getAllUsers();
+    UserCreationDTO saveUser();
+
 }
