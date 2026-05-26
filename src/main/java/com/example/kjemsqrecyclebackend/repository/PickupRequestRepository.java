@@ -12,5 +12,4 @@ public interface PickupRequestRepository extends JpaRepository<PickupRequest, In
     List<PickupRequest> findAllByBagsCollectedIsNullAndCompany_Id(int companyId);
     List<PickupRequest> findAllByBagsCollectedIsNull();
     List<PickupRequest> findAllByBagsCollectedIsNotNull();
-    PickupRequest findById(int activePickupRequest);
 }
