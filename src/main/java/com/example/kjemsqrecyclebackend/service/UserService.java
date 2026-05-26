@@ -43,7 +43,14 @@ public class UserService implements IUserService{
     public UserCreationDTO saveUser(UserCreationDTO dto){
         User user = new User();
 
-        return ;
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPhonenumber(dto.getPhonenumber());
+        user.setRole(dto.getRole());
+        userRepository.save(user);
+
+        return dto;
     }
 
 }

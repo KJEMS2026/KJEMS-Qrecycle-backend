@@ -1,5 +1,6 @@
 package com.example.kjemsqrecyclebackend.controller;
 
+import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
 import com.example.kjemsqrecyclebackend.dto.UserDTO;
 import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.service.IUserService;
@@ -25,9 +26,9 @@ public class UserController {
     }
 
     @PostMapping ("/saveUser")
-    public ResponseEntity<User> saveUser(@RequestBody UserCreationDTO body){
+    public ResponseEntity<UserCreationDTO> saveUser(@RequestBody UserCreationDTO body){
 
-        User created = userService.saveUser(body);
+        UserCreationDTO created = userService.saveUser(body);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
