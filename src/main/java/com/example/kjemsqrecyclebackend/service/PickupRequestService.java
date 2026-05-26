@@ -101,6 +101,7 @@ public class PickupRequestService implements IPickupRequestService {
 
         for (PickupRequest pickupRequest : pickupRequests) {
             CompanyPickupRequestDTO companyPickupRequestDTO = new CompanyPickupRequestDTO();
+            companyPickupRequestDTO.setActivePickupRequestId(pickupRequest.getId());
             companyPickupRequestDTO.setBagsToBeCollected(pickupRequest.getBagsToBeCollected());
             activePickupRequestsCompany.add(companyPickupRequestDTO);
         }
