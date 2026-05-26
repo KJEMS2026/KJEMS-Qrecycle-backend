@@ -47,6 +47,7 @@ public class PickupRequestService implements IPickupRequestService {
     }
 
     @Override
+    @Transactional
     public PickupRequest createForCompany(UUID authUserId, CompanyPickupRequestDTO dto) {
         User user = userRepository.findById(authUserId)
                 .orElseThrow(() -> new RuntimeException("Bruger ikke fundet for auth ID: " + authUserId));
@@ -70,6 +71,7 @@ public class PickupRequestService implements IPickupRequestService {
     }
 
     @Override
+    @Transactional
     public List<ActivePickupRequestDTO> getActivePickupRequests() {
         List<PickupRequest> pickupRequests = pickupRequestRepository.findAllByBagsCollectedIsNullOrderByDateCreationDesc();
         List<ActivePickupRequestDTO> activePickupRequests = new ArrayList<>();
@@ -85,6 +87,7 @@ public class PickupRequestService implements IPickupRequestService {
     }
 
     @Override
+    @Transactional
     public List<CompanyPickupRequestDTO> getActivePickupRequestsCompany(UUID userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Bruger ikke fundet for auth ID: " + userId));
