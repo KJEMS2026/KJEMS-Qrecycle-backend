@@ -47,7 +47,7 @@ public class PickupRequestController {
         return pickupRequestService.getActivePickupRequests();
     }
 
-    @PostMapping("/update-pickuprequest/{driverId}")
+    @PutMapping("/update-pickuprequest/{driverId}")
     public ResponseEntity<PickupRequest> updatePickupRequest(@RequestBody RegisterPantDTO body, @PathVariable UUID driverId){
         PickupRequest updated = pickupRequestService.updatePickupRequest(body,driverId);
 
@@ -62,5 +62,12 @@ public class PickupRequestController {
     @GetMapping("/stats")
     public List<StatsDTO> getStats() {
         return pickupRequestService.getStats();
+    }
+
+    @DeleteMapping("/delete/active-pickup-request/{activePickupRequestId}")
+    public ResponseEntity<Void> deleteActivePickupRequest(@PathVariable int activePickupRequestId) {
+        pickupRequestService.deleteActivePickupRequest(activePickupRequestId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -110,7 +110,7 @@ public class PickupRequestService implements IPickupRequestService {
     @Override
     @Transactional
     public PickupRequest updatePickupRequest(RegisterPantDTO dto, UUID driverId){
-        PickupRequest pickupRequest = pickupRequestRepository.findById(dto.getPickupRequestId()).orElseThrow();
+        PickupRequest pickupRequest = pickupRequestRepository.findById(dto.getPickupRequestId());
         User driver = userRepository.findById(driverId).orElseThrow();
 
 
@@ -140,5 +140,12 @@ public class PickupRequestService implements IPickupRequestService {
             statsDTOList.add(stats);
         }
         return statsDTOList;
+    }
+
+    @Override
+    @Transactional
+    public void deleteActivePickupRequest(int activePickupRequestId) {
+        PickupRequest activePickupRequest = pickupRequestRepository.findById(activePickupRequestId);
+        pickupRequestRepository.delete(activePickupRequest);
     }
 }
