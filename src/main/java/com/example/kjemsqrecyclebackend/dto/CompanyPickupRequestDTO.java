@@ -10,6 +10,7 @@ import java.util.UUID;
 @Setter
 public class CompanyPickupRequestDTO {
 
+    private int activePickupRequestId;
     private UUID userId;
     private int bagsToBeCollected;
 
