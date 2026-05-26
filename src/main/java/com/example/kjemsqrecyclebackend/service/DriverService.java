@@ -3,6 +3,7 @@ package com.example.kjemsqrecyclebackend.service;
 import com.example.kjemsqrecyclebackend.dto.RouteStopDTO;
 import com.example.kjemsqrecyclebackend.entity.PickupRequest;
 import com.example.kjemsqrecyclebackend.repository.PickupRequestRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
+    @Transactional
     public List<RouteStopDTO> getRouteAddresses() {
         List<PickupRequest> requests = pickupRequestRepository.findAllByBagsCollectedIsNull();
         List<RouteStopDTO> routeStops = new ArrayList<>();
