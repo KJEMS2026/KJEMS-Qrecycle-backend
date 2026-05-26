@@ -4,10 +4,12 @@ import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
 import com.example.kjemsqrecyclebackend.dto.UserDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.User;
+import com.example.kjemsqrecyclebackend.entity.UserRole;
 import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
 import com.example.kjemsqrecyclebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
@@ -24,6 +26,7 @@ public class UserService implements IUserService{
 
     private UserRepository userRepository;
     private CompanyRepository companyRepository;
+    private ICompanyService companyService;
 
     @Value("${supabase.url}")
     private String supabaseUrl;
@@ -31,9 +34,10 @@ public class UserService implements IUserService{
     @Value("${supabase.service-key}")
     private String serviceKey;
 
-    public UserService(UserRepository userRepository, CompanyRepository companyRepository) {
+    public UserService(UserRepository userRepository, CompanyRepository companyRepository, ICompanyService companyService) {
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
+        this.companyService = companyService;
     }
 
     public List<UserDTO> getAllUsers(){
@@ -89,6 +93,7 @@ public class UserService implements IUserService{
     }
 
     @Override
+    @Transactional
     public UserCreationDTO saveUser(UserCreationDTO dto){
         UUID supabaseId = saveAuthUser(dto);
         User user = new User();
@@ -100,6 +105,10 @@ public class UserService implements IUserService{
         user.setPhonenumber(dto.getPhonenumber());
         user.setRole(dto.getRole());
         userRepository.save(user);
+
+        if(dto.getRole() == UserRole.COMPANY){
+            companyService.saveCompany(dto, user);
+        }
 
         return dto;
     }
