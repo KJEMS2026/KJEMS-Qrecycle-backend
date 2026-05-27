@@ -46,6 +46,7 @@ public class UserService implements IUserService{
 
         for(User user : users){
             UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
             String fullName = user.getFirstName() + " " + user.getLastName();
             userDTO.setFullName(fullName);
             userDTO.setEmail(user.getEmail());
@@ -111,6 +112,34 @@ public class UserService implements IUserService{
         }
 
         return dto;
+    }
+
+    public void deleteAuthUser(UUID userId) {
+
+        try {
+            String supaUrl = supabaseUrl + "/auth/v1/admin/users/" + userId + "?apikey=" + serviceKey;
+
+            HttpClient client = HttpClient.newHttpClient();
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(supaUrl))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + serviceKey)
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Failed to delete auth user. Status: "
+                        + response.statusCode() + ", Body: " + response.body());
+            }
+
+            System.out.println("Deleted auth user: " + userId);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

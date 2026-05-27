@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -33,4 +34,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @DeleteMapping("/users/delete/{userId}")
+    public ResponseEntity deleteUser(@PathVariable UUID userId) {
+
+        try {
+            userService.deleteAuthUser(userId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
