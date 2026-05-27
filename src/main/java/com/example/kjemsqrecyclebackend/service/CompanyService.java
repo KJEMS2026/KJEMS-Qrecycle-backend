@@ -2,9 +2,10 @@ package com.example.kjemsqrecyclebackend.service;
 
 import com.example.kjemsqrecyclebackend.dto.CompanyUserDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyDTO;
+import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
+import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
-import com.example.kjemsqrecyclebackend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,13 @@ public class CompanyService implements ICompanyService {
             companyUserDTOList.add(dto);
         }
         return companyUserDTOList;
+    }
+
+    public Company saveCompany(UserCreationDTO dto, User user){
+        Company company = new Company();
+        company.setCompanyName(dto.getCompanyName());
+        company.setAddress(dto.getCompanyAddress());
+        company.setUser(user);
+        return companyRepository.save(company);
     }
 }
