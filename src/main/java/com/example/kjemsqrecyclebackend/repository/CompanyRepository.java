@@ -13,4 +13,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer>{
 
     Optional<Company> findByUser(User user);
     Company findByUserId(UUID userId);
+
+    UUID user(User user);
 }

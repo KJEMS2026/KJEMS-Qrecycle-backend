@@ -3,6 +3,7 @@ package com.example.kjemsqrecyclebackend.service;
 import com.example.kjemsqrecyclebackend.dto.CompanyUserDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyDTO;
 import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
+import com.example.kjemsqrecyclebackend.dto.UserEditDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CompanyService implements ICompanyService {
@@ -62,5 +64,20 @@ public class CompanyService implements ICompanyService {
         company.setAddress(dto.getCompanyAddress());
         company.setUser(user);
         return companyRepository.save(company);
+    }
+
+    public void getPrefilledCompanyForEditForm(UUID userId, UserEditDTO dto){
+
+        Company company = companyRepository.findByUserId(userId);
+
+        dto.setCompanyName(company.getCompanyName());
+        dto.setCompanyAddress(company.getAddress());
+    }
+
+    public void updateCompany(UserEditDTO dto, User user){
+        Company company = companyRepository.findByUserId(user.getId());
+        company.setCompanyName(dto.getCompanyName());
+        company.setAddress(dto.getCompanyAddress());
+        companyRepository.save(company);
     }
 }
