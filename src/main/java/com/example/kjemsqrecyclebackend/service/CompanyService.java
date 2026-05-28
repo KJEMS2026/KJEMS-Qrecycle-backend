@@ -3,7 +3,6 @@ package com.example.kjemsqrecyclebackend.service;
 import com.example.kjemsqrecyclebackend.dto.CompanyUserDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyDTO;
 import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
-import com.example.kjemsqrecyclebackend.dto.UserEditDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
@@ -66,7 +65,7 @@ public class CompanyService implements ICompanyService {
         return companyRepository.save(company);
     }
 
-    public void getPrefilledCompanyForEditForm(UUID userId, UserEditDTO dto){
+    public void getPrefilledCompanyForEditForm(UUID userId, UserCreationDTO dto){
 
         Company company = companyRepository.findByUserId(userId);
 
@@ -74,7 +73,7 @@ public class CompanyService implements ICompanyService {
         dto.setCompanyAddress(company.getAddress());
     }
 
-    public void updateCompany(UserEditDTO dto, User user){
+    public void updateCompany(UserCreationDTO dto, User user){
         Company company = companyRepository.findByUserId(user.getId());
         company.setCompanyName(dto.getCompanyName());
         company.setAddress(dto.getCompanyAddress());

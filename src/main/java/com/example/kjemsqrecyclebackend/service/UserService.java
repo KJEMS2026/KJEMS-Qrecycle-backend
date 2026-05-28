@@ -2,7 +2,6 @@ package com.example.kjemsqrecyclebackend.service;
 
 import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
 import com.example.kjemsqrecyclebackend.dto.UserDTO;
-import com.example.kjemsqrecyclebackend.dto.UserEditDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
 import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.entity.UserRole;
@@ -145,14 +144,15 @@ public class UserService implements IUserService{
         }
     }
 
-    public UserEditDTO getPrefilledUserForEditForm(UUID id){
+    public UserCreationDTO getPrefilledUserForEditForm(UUID id){
         User user = userRepository.findById(id).orElseThrow();
 
-        UserEditDTO dto = new UserEditDTO();
+        UserCreationDTO dto = new UserCreationDTO();
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
         dto.setPhonenumber(user.getPhonenumber());
+        dto.setRole(user.getRole());
 
         if(user.getRole() == UserRole.COMPANY){
             companyService.getPrefilledCompanyForEditForm(id, dto);
@@ -161,7 +161,7 @@ public class UserService implements IUserService{
         return dto;
     }
 
-    private void updateAuthUser(UUID id, UserEditDTO dto){
+    private void updateAuthUser(UUID id, UserCreationDTO dto){
         String url = supabaseUrl + "/auth/v1/admin/users/" + id + "?apikey=" + serviceKey;
         String body = String.format("{\"email\":\"%s\",\"password\":\"%s\"}",
                 dto.getEmail(), dto.getPassword());
@@ -171,7 +171,7 @@ public class UserService implements IUserService{
 
     @Override
     @Transactional
-    public void updateUser(UUID id, UserEditDTO dto){
+    public void updateUser(UUID id, UserCreationDTO dto){
         User user = userRepository.findById(id).orElseThrow();
 
         updateAuthUser(id, dto);

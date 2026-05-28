@@ -2,7 +2,6 @@ package com.example.kjemsqrecyclebackend.controller;
 
 import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
 import com.example.kjemsqrecyclebackend.dto.UserDTO;
-import com.example.kjemsqrecyclebackend.dto.UserEditDTO;
 import com.example.kjemsqrecyclebackend.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,13 +44,13 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("/updateUser/{id}")
-    public ResponseEntity<UserEditDTO> getPrefilledUserForEditForm(@PathVariable UUID id){
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<UserCreationDTO> getPrefilledUserForEditForm(@PathVariable UUID id){
         return ResponseEntity.ok(userService.getPrefilledUserForEditForm(id));
     }
 
     @PutMapping("/updateUser/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable UUID id, @RequestBody UserEditDTO dto){
+    public ResponseEntity<Void> updateUser(@PathVariable UUID id, @RequestBody UserCreationDTO dto){
 
         userService.updateUser(id, dto);
 
