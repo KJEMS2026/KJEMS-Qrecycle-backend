@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CompanyService implements ICompanyService {
@@ -62,5 +63,20 @@ public class CompanyService implements ICompanyService {
         company.setAddress(dto.getCompanyAddress());
         company.setUser(user);
         return companyRepository.save(company);
+    }
+
+    public void getPrefilledCompanyForEditForm(UUID userId, UserCreationDTO dto){
+
+        Company company = companyRepository.findByUserId(userId);
+
+        dto.setCompanyName(company.getCompanyName());
+        dto.setCompanyAddress(company.getAddress());
+    }
+
+    public void updateCompany(UserCreationDTO dto, User user){
+        Company company = companyRepository.findByUserId(user.getId());
+        company.setCompanyName(dto.getCompanyName());
+        company.setAddress(dto.getCompanyAddress());
+        companyRepository.save(company);
     }
 }

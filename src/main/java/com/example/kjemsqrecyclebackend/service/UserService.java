@@ -58,36 +58,38 @@ public class UserService implements IUserService{
         return dtoUsers;
     }
 
+    private HttpResponse<String> sendSupabaseRequest(String url, String requestBody, String method) {
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest.Builder builder = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + serviceKey);
+
+            if (method.equals("POST")) {
+                builder.POST(HttpRequest.BodyPublishers.ofString(requestBody));
+            } else if (method.equals("PUT")) {
+                builder.PUT(HttpRequest.BodyPublishers.ofString(requestBody));
+            }
+
+            return client.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private UUID saveAuthUser(UserCreationDTO dto) {
+        String url = supabaseUrl + "/auth/v1/admin/users?apikey=" + serviceKey;
+        String body = String.format("{\"email\":\"%s\",\"password\":\"%s\",\"email_confirm\":true}",
+                dto.getEmail(), dto.getPassword());
+
+        HttpResponse<String> response = sendSupabaseRequest(url, body, "POST");
 
         try {
-
-            String url = supabaseUrl + "/auth/v1/admin/users";
-
-            String requestBody = String.format(
-                    "{\"email\":\"%s\",\"password\":\"%s\",\"email_confirm\":true}",
-                    dto.getEmail(), dto.getPassword()
-            );
-
-            HttpClient client = HttpClient.newHttpClient();
-            String supaUrl = supabaseUrl + "/auth/v1/admin/users?apikey=" + serviceKey;
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(supaUrl))
-                    .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + serviceKey)
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println("Supabase response: " + response.body());
-            System.out.println("Env key er null: " + (System.getenv("SUPABASE_SERVICE_ROLE_KEY") == null));
-            System.out.println("Spring key er null: " + (serviceKey == null || serviceKey.isEmpty()));
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(response.body());
             return UUID.fromString(json.get("id").asText());
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -139,6 +141,49 @@ public class UserService implements IUserService{
 
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public UserCreationDTO getPrefilledUserForEditForm(UUID id){
+        User user = userRepository.findById(id).orElseThrow();
+
+        UserCreationDTO dto = new UserCreationDTO();
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setEmail(user.getEmail());
+        dto.setPhonenumber(user.getPhonenumber());
+        dto.setRole(user.getRole());
+
+        if(user.getRole() == UserRole.COMPANY){
+            companyService.getPrefilledCompanyForEditForm(id, dto);
+        }
+
+        return dto;
+    }
+
+    private void updateAuthUser(UUID id, UserCreationDTO dto){
+        String url = supabaseUrl + "/auth/v1/admin/users/" + id + "?apikey=" + serviceKey;
+        String body = String.format("{\"email\":\"%s\",\"password\":\"%s\"}",
+                dto.getEmail(), dto.getPassword());
+
+        sendSupabaseRequest(url, body, "PUT");
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(UUID id, UserCreationDTO dto){
+        User user = userRepository.findById(id).orElseThrow();
+
+        updateAuthUser(id, dto);
+
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPhonenumber(dto.getEmail());
+        userRepository.save(user);
+
+        if(user.getRole() == UserRole.COMPANY){
+            companyService.updateCompany(dto, user);
         }
     }
 
