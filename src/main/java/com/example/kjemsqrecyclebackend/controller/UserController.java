@@ -34,6 +34,17 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @DeleteMapping("/users/delete/{userId}")
+    public ResponseEntity deleteUser(@PathVariable UUID userId) {
+
+        try {
+            userService.deleteAuthUser(userId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch(RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @GetMapping("/updateUser/{id}")
     public ResponseEntity<UserEditDTO> getPrefilledUserForEditForm(@PathVariable UUID id){
         return ResponseEntity.ok(userService.getPrefilledUserForEditForm(id));

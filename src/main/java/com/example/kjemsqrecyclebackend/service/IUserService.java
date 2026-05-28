@@ -13,6 +13,7 @@ public interface IUserService {
 
     List<UserDTO> getAllUsers();
     UserCreationDTO saveUser(UserCreationDTO dto);
+    void deleteAuthUser(UUID id);
     void updateUser(UUID id, UserEditDTO dto);
     UserEditDTO getPrefilledUserForEditForm(UUID id);
 
