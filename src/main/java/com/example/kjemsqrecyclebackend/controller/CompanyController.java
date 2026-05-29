@@ -1,6 +1,7 @@
 package com.example.kjemsqrecyclebackend.controller;
 
 import com.example.kjemsqrecyclebackend.dto.CompanyDTO;
+import com.example.kjemsqrecyclebackend.dto.CompanyUserDTO;
 import com.example.kjemsqrecyclebackend.service.ICompanyService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,12 @@ public class CompanyController {
     }
 
     @GetMapping("/companies")
-    public List<CompanyDTO> companies() {
+    public List<CompanyDTO> getCompanies() {
         return companyService.getCompanies();
+    }
+
+    @GetMapping("/companies-users")
+    public List<CompanyUserDTO> getCompaniesAndCompanyUsers() {
+        return companyService.getCompaniesAndCompanyUsers();
     }
 }

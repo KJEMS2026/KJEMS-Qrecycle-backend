@@ -1,12 +1,17 @@
 package com.example.kjemsqrecyclebackend.service;
 
+import com.example.kjemsqrecyclebackend.dto.CompanyUserDTO;
 import com.example.kjemsqrecyclebackend.dto.CompanyDTO;
+import com.example.kjemsqrecyclebackend.dto.UserCreationDTO;
 import com.example.kjemsqrecyclebackend.entity.Company;
+import com.example.kjemsqrecyclebackend.entity.User;
 import com.example.kjemsqrecyclebackend.repository.CompanyRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CompanyService implements ICompanyService {
@@ -17,6 +22,8 @@ public class CompanyService implements ICompanyService {
         this.companyRepository = companyRepository;
     }
 
+    @Override
+    @Transactional
     public List<CompanyDTO> getCompanies() {
         List<Company> companies = companyRepository.findAll();
         List<CompanyDTO> companiesDTO = new ArrayList<>();
@@ -28,5 +35,48 @@ public class CompanyService implements ICompanyService {
             companiesDTO.add(companyDTO);
         }
         return companiesDTO;
+    }
+
+    @Override
+    @Transactional
+    public List<CompanyUserDTO> getCompaniesAndCompanyUsers() {
+        List<Company> companies = companyRepository.findAll();
+        List<CompanyUserDTO> companyUserDTOList = new ArrayList<>();
+
+        for (Company company : companies) {
+            CompanyUserDTO dto = new CompanyUserDTO();
+            dto.setCompanyId(company.getId());
+            dto.setCompanyName(company.getCompanyName());
+            dto.setAddress(company.getAddress());
+            String fullName = company.getUser().getFirstName() + " " + company.getUser().getLastName();
+            dto.setFullName(fullName);
+            dto.setEmail(company.getUser().getEmail());
+            dto.setPhone(company.getUser().getPhonenumber());
+            companyUserDTOList.add(dto);
+        }
+        return companyUserDTOList;
+    }
+
+    public Company saveCompany(UserCreationDTO dto, User user){
+        Company company = new Company();
+        company.setCompanyName(dto.getCompanyName());
+        company.setAddress(dto.getCompanyAddress());
+        company.setUser(user);
+        return companyRepository.save(company);
+    }
+
+    public void getPrefilledCompanyForEditForm(UUID userId, UserCreationDTO dto){
+
+        Company company = companyRepository.findByUserId(userId);
+
+        dto.setCompanyName(company.getCompanyName());
+        dto.setCompanyAddress(company.getAddress());
+    }
+
+    public void updateCompany(UserCreationDTO dto, User user){
+        Company company = companyRepository.findByUserId(user.getId());
+        company.setCompanyName(dto.getCompanyName());
+        company.setAddress(dto.getCompanyAddress());
+        companyRepository.save(company);
     }
 }

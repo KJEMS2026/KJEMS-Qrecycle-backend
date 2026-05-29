@@ -21,4 +21,5 @@ public interface IPickupRequestService {
     PickupRequest createForCompany(UUID authUserId, CompanyPickupRequestDTO dto);
     PickupRequest createForAdmin(AdminPickupRequestDTO dto);
     PickupRequest updatePickupRequest(RegisterPantDTO dto, UUID driverId);
+    void deleteActivePickupRequest(int activePickupRequestId);
 }

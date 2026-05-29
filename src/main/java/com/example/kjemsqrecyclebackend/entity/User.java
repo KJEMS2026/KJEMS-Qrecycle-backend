@@ -2,6 +2,8 @@ package com.example.kjemsqrecyclebackend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -25,6 +27,7 @@ public class User {
     private String email;
     private String phonenumber;
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "user_role", nullable = false)
     private UserRole role;
 }
